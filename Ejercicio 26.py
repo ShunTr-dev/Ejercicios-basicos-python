@@ -18,21 +18,26 @@ while not texto_opcions == "detener":
 		while True:
 			nome_pro = ""
 			nome_pro = raw_input("Introduza o nome do producto: ")
-			if nome_pro == "stop":
+			if nome_pro == "stop" or nome_pro.replace(" ","") == "":
 				break
 			precio_pro = raw_input("Introduza o prezo do produto: ")
-			if precio_pro == "stop":
+			if precio_pro == "stop" or precio_pro.replace(" ","") == "":
 				break
 			nome_pro = nome_pro.replace(" ", "")
 			precio_pro = precio_pro.replace(" ","")
-			n_produto = produto(nome_pro,int(precio_pro))
-			produto_valido = True
+			try:
+				n_produto = produto(nome_pro,int(precio_pro))
+				produto_valido = True
+			except:
+				n_produto = produto(nome_pro,precio_pro)
+				produto_valido = False
+				print(">> Inserte un numero de prezo!")
 			for i in lista_produtos:
 				if nome_pro == i.nome:
-					print("Xa existe este produto!")
+					print(">> Xa existe este produto!")
 					produto_valido = False
 					break
-			if n_produto.nome != "" and n_produto.prezo != "" and produto_valido:
+			if produto_valido:
 				lista_produtos.append(n_produto)
 				
 	if texto_opcions == "listar":
@@ -48,6 +53,7 @@ while not texto_opcions == "detener":
 			if i.nome == texto_borrado:
 				del lista_produtos[num_lista]
 				print(">>> Produto borrado!")
+				break
 			num_lista += 1
 			if num_lista == len(lista_produtos):
 				print(">>> Non se encontraron produtos con ese nome")
